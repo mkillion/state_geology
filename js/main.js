@@ -1816,44 +1816,7 @@ function(
         };
         drawerMenus.push(menuObj);
 
-        // Data (tools) panel:
-        content = '';
-        content += '<div class="panel-container">';
-		content += '<div class="panel-header">Data<img id="loader" class="hide" src="images/ajax-loader.gif"></div>';
 
-		content += '<div class="data-header esri-icon-right-triangle-arrow" id="dwnload"><span class="find-hdr-txt"> Download</span></div>';
-		content += '<div class="data-body hide" id="data-dwnload">';
-		content += "<table><tr><td></td><td><label><input type='checkbox' class='dwnld-type' value='events' id='chk-dwn-evts'> Earthquakes</label></td></tr>";
-		content += "<tr><td></td><td><label><input type='checkbox' class='dwnld-type' id='chk-dwn-wells' value='wells'> Wells</label></td></tr>";
-		content += "<tr><td></td><td><button class='find-button' onclick='dataDownload()'> Download</button></td></tr></table>";
-		content += "<div class='download-link' id='wells-link'></div>";
-		content += '</div>';	// end download div.
-
-		content += '<div class="data-header esri-icon-right-triangle-arrow" id="grph"><span class="find-hdr-txt"> Plots</span></div>';
-		content += '<div class="data-body hide" id="data-grph">';
-		content += "<table><tr><td></td><td><label><input type='radio' name='graph-type' value='mag' checked> Magnitude</label></td></tr>";
-		content += "<tr><td></td><td><label><input type='radio' name='graph-type' value='count'> Count</label></td></tr>";
-		content += "<tr><td></td><td><label><input type='radio' name='graph-type' value='cumulative'> Cumulative</label></td></tr>";
-		content += "<tr><td></td><td><label><input type='radio' name='graph-type' class='inj-graph' value='injvol' disabled> <span class='inj-graph-text'>Injection Volume</span></label></td></tr>";
-		content += "<tr><td></td><td><label><input type='radio' name='graph-type' class='inj-graph' value='joint' disabled> <span class='inj-graph-text'>Joint Magnitude/Volume Plot</span></label></td></tr>";
-		content += "<tr><td></td><td><label><input type='radio' name='graph-type' class='inj-graph' value='jointcount' disabled> <span class='inj-graph-text'>Joint Count/Volume Plot</span></label></td></tr>";
-		content += "<tr><td></td><td><button class='find-button' id='chart-btn' onclick='makeChart()'>Create Plot</button></td></tr></table>";
-		content += '</div>';	// end graph div.
-
-        content += '</div>';	// end data panel div.
-
-		// Initialize chart:
-		$("#chart-container").dialog( {
-            autoOpen: false,
-            dialogClass: "dialog",
-			title: ""
-        } );
-
-        menuObj = {
-            label: '<div class="esri-icon-table"></div><div class="icon-text">Data</div>',
-            content: content
-        };
-        drawerMenus.push(menuObj);
 
         // Find panel:
         content = '';
