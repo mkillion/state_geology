@@ -291,6 +291,10 @@ function(
 		}
 	}
 
+	clearHighlights = function() {
+		graphicsLayer.removeAll();
+	}
+
 
 	resetDefaults = function() {
 		graphicsLayer.removeAll();
@@ -1837,26 +1841,16 @@ function(
         content += '<tr><td></td><td><button class="find-button" onclick="zoomToLatLong();">Find</button></td></tr>';
         content += '</table><hr></div>';
 
-		// earthquake event id:
-		// content += '<div class="find-header esri-icon-right-triangle-arrow" id="event"><span class="find-hdr-txt"> Event ID</span></div>';
-        // content += '<div class="find-body hide" id="find-event">';
-        // content += '<table><tr><td class="find-label">Event ID:</td><td><input id="eventid" size="14"></td><td><button class=find-button onclick=findIt("event")>Find</button></td></tr></table>';
-        // content += '</div>';
-
-        // field:
-        // content += '<div class="find-header esri-icon-right-triangle-arrow" id="field"><span class="find-hdr-txt"> Oil-Gas Field</span></div>';
-        // content += '<div class="find-body hide" id="find-field">';
-        // content += '<table><tr><td class="find-label">Name:</td><td><input id="field-select"></td></tr>';
-		// content += '<tr><td colspan="2"><input type="checkbox" id="field-list-wells">List wells assigned to this field</td></tr>';
-		// content += '<tr><td></td><td><button class=find-button onclick=findIt("field")>Find</button></td></tr></table>';
-        // content += '</div>';
+		// buttons:
+		content += '<table><tr><td><button onclick="clearHighlights()">Clear Highlight</button></td><td><button onclick="resetFinds()">Reset</button></td></tr></table>';
 
 		// bookmarks
 		// content += '<div class="panel-sub-txt">Bookmarks <span class="esri-icon-plus-circled" id="add-bookmark" title="Add Bookmark" onclick="addBookmark()"></span></div>';
 		// content += '<div class="bookmark-link"><span onclick="originalLocation()">Original Location</div>';
         // content += '</div>';
         // content += '</div>';
-		content += '<span id="reset-finds"><button onclick="resetFinds()">Reset</button></span>';
+
+		// content += '<span id="remove-hilight"><button onclick="clearHighlights()">Clear Highlight</button></span> <span id="reset-finds"><button onclick="resetFinds()">Reset</button></span>';
 
         menuObj = {
             label: '<div class="icon-zoom-in"></div><div class="icon-text">Find</div>',
