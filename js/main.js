@@ -140,7 +140,7 @@ function(
     var findParams = new FindParameters();
 	findParams.returnGeometry = true;
 
-    var basemapLayer = new TileLayer( {url:"http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", id:"Topo", visible:true} );
+    var basemapLayer = new TileLayer( {url:"http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", id:"Basemap", visible:true} );
     var adminBndsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_admin_bnds/MapServer", id:"Administrative Boundaries", visible:true} );
 	var roadsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_roads/MapServer", id:"Roads", visible:true} );
 	var hillshadeLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hillshade/MapServer", id:"Hillshade", visible:true} );
@@ -148,7 +148,7 @@ function(
 	var hydroLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hydro/MapServer", id:"Hydro", visible:true} );
 
     var map = new Map( {
-		layers: [hillshadeLayer, geologyLayer, hydroLayer, adminBndsLayer, roadsLayer]
+		layers: [basemapLayer, hillshadeLayer, geologyLayer, hydroLayer, adminBndsLayer, roadsLayer]
     } );
 
     var graphicsLayer = new GraphicsLayer();
@@ -157,7 +157,7 @@ function(
     var view = new MapView( {
         map: map,
         container: "mapDiv",
-        center: [-98.4, 39],
+        center: [-98.4, 38.5],
         zoom: 7,
         ui: { components: ["zoom"] },
 		constraints: { rotationEnabled: false }
@@ -1067,12 +1067,12 @@ function(
 
                 if (dom.byId('sec').value !== "") {
                     plssText = 'S' + dom.byId('sec').value + '-T' + dom.byId('twn').value + 'S-R' + dom.byId('rng').value + dir;
-                    findParams.layerIds = [3];
+                    findParams.layerIds = [8];
                     findParams.searchFields = ["s_r_t"];
                 }
                 else {
                     plssText = 'T' + dom.byId('twn').value + 'S-R' + dom.byId('rng').value + dir;
-                    findParams.layerIds = [4];
+                    findParams.layerIds = [10];
                     findParams.searchFields = ["t_r"];
                 }
                 findParams.searchText = plssText;
@@ -1112,27 +1112,6 @@ function(
 				break;
         }
         findTask.execute(findParams).then(function(response) {
-			if (what === "event" && response.results.length > 0) {
-				switch (response.results[0].layerName) {
-					case "KGS Cataloged Events":
-						kgsCatalogedLayer.visible = true;
-						$("#KGS-Cataloged-Events input").prop("checked", true);
-						break;
-					case "KGS Preliminary Events":
-						kgsPrelimLayer.visible = true;
-						$("#KGS-Preliminary-Events input").prop("checked", true);
-						break;
-					case "NEIC Cataloged Events":
-						neicLayer.visible = true;
-						$("#NEIC-Cataloged-Events input").prop("checked", true);
-						break;
-					case "OGS Cataloged Events":
-						ogsLayer.visible = true;
-						$("#OGS-Cataloged-Events input").prop("checked", true);
-						break;
-				}
-			}
-
             zoomToFeature(response.results[0].feature);
 
 			var query = new Query();
@@ -1781,7 +1760,7 @@ function(
 
 			view.goTo( {
 				target: wmPt,
-				zoom: 16
+				zoom: 11
 			}, {duration: 750} ).then(function() {
 	            graphicsLayer.add(pointGraphic);
 			} );
@@ -1816,30 +1795,11 @@ function(
         };
         drawerMenus.push(menuObj);
 
-
-
         // Find panel:
         content = '';
         content += '<div class="panel-container">';
         content += '<div class="panel-header">Find</div>';
         content += '<div class="panel-padding">';
-
-		// api:
-        content += '<div class="find-header esri-icon-right-triangle-arrow" id="api"><span class="find-hdr-txt"> Well API</span></div>';
-        content += '<div class="find-body hide" id="find-api">';
-        content += 'API Number (extension optional):<br>';
-        content += '<input type="text" id="api_state" size="2" onKeyUp="jumpFocus(api_county, 2, this.id)"/>-';
-        content += '<input type="text" id="api_county" size="3" onKeyUp="jumpFocus(api_number, 3, this.id)"/>-';
-        content += '<input type="text" id="api_number" size="5" onKeyUp="jumpFocus(api_extension, 5, this.id)"/>-';
-        content += '<input type="text" id="api_extension" size="4"/>';
-        content += '<button class=find-button onclick=findIt("api")>Find</button>';
-        content += '</div>';
-
-		// county:
-        content += '<div class="find-header esri-icon-right-triangle-arrow" id="county"><span class="find-hdr-txt"> County</span></div>';
-        content += '<div class="find-body hide" id="find-county">';
-        content += '<table><tr><td class="find-label">County:</td><td><select id="lstCounty"></select></td><td><button class=find-button onclick=findIt("county")>Find</button></td></tr></table>';
-        content += '</div>';
 
 		// plss:
         content += '<div class="find-header esri-icon-right-triangle-arrow" id="plss"><span class="find-hdr-txt"> Section-Township-Range</span></div>';
@@ -1863,7 +1823,7 @@ function(
         content += '</table></div>';
 
         // address:
-        content += '<div class="find-header esri-icon-right-triangle-arrow" id="address"><span class="find-hdr-txt"> Address or Place<span></div>';
+        content += '<div class="find-header esri-icon-right-triangle-arrow" id="address"><span class="find-hdr-txt"> Address, Town, or County<span></div>';
         content += '<div class="find-body hide" id="find-address">';
         content += '<div id="srch"></div>';
         content += '</div>';
