@@ -2102,33 +2102,33 @@ function(
 
 
     function executeIdTask(event) {
-		var idLayers = [];
-		var visLayers = $(".toc-sub-item :checked").map(function() {
-			return $(this).val();
-		} ).get();
+		// var idLayers = [];
+		// var visLayers = $(".toc-sub-item :checked").map(function() {
+		// 	return $(this).val();
+		// } ).get();
+		//
+		// for (var i = 0; i < visLayers.length; i++) {
+		// 	switch (visLayers[i]) {
+		// 		case "KGS Cataloged Events":
+		// 			idLayers.push(14);
+		// 			break;
+		// 		case "KGS Preliminary Events":
+		// 			idLayers.push(15);
+		// 			break;
+		// 		case "Historic Events":
+		// 			idLayers.push(20);
+		// 			break;
+		// 		case "NEIC Cataloged Events":
+		// 			idLayers.push(16);
+		// 			break;
+		// 		case "Salt Water Disposal Wells":
+		// 			idLayers.push(19);
+		// 			break;
+		// 	}
+		// }
+		// var layerids = idLayers.join(",");
 
-		for (var i = 0; i < visLayers.length; i++) {
-			switch (visLayers[i]) {
-				case "KGS Cataloged Events":
-					idLayers.push(14);
-					break;
-				case "KGS Preliminary Events":
-					idLayers.push(15);
-					break;
-				case "Historic Events":
-					idLayers.push(20);
-					break;
-				case "NEIC Cataloged Events":
-					idLayers.push(16);
-					break;
-				case "Salt Water Disposal Wells":
-					idLayers.push(19);
-					break;
-			}
-		}
-		var layerids = idLayers.join(",");
-
-		identifyParams.layerIds = [layerids];
+		identifyParams.layerIds = [7];
         identifyParams.geometry = event.mapPoint;
         identifyParams.mapExtent = view.extent;
 		identifyParams.layerDefinitions = idDef;
@@ -2179,6 +2179,14 @@ function(
 					content: earthquakeContent(feature)
 				} );
 				feature.popupTemplate = earthquakeTemplate;
+			}
+			else if (layerName === "StateWide500g") {
+				// geology
+				var geologyTemplate = new PopupTemplate( {
+					title: "Geologic Formation:",
+					content: geologyContent(feature)
+				} );
+				feature.popupTemplate = geologyTemplate;
 			}
 			return feature;
 		} );
@@ -2256,6 +2264,13 @@ function(
 
         return content;
     }
+
+
+	function geologyContent(feature) {
+		var content = "<table id='popup-tbl'><tr><td>Name:</td><td>{Fname}</td></tr></table>";
+
+		return content;
+	}
 
 
     function fieldContent(feature) {
