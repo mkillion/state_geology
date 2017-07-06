@@ -102,6 +102,8 @@ function(
 	var hilite;
 	var cntyArr = new Array("Allen", "Anderson", "Atchison", "Barber", "Barton", "Bourbon", "Brown", "Butler", "Chase", "Chautauqua", "Cherokee", "Cheyenne", "Clark", "Clay", "Cloud", "Coffey", "Comanche", "Cowley", "Crawford", "Decatur", "Dickinson", "Doniphan", "Douglas", "Edwards", "Elk", "Ellis", "Ellsworth", "Finney", "Ford", "Franklin", "Geary", "Gove", "Graham", "Grant", "Gray", "Greeley", "Greenwood", "Hamilton", "Harper", "Harvey", "Haskell", "Hodgeman", "Jackson", "Jefferson", "Jewell", "Johnson", "Kearny", "Kingman", "Kiowa", "Labette", "Lane", "Leavenworth", "Lincoln", "Linn", "Logan", "Lyon", "McPherson", "Marion", "Marshall", "Meade", "Miami", "Mitchell", "Montgomery", "Morris", "Morton", "Nemaha", "Neosho", "Ness", "Norton", "Osage", "Osborne", "Ottawa", "Pawnee", "Phillips", "Pottawatomie", "Pratt", "Rawlins", "Reno", "Republic", "Rice", "Riley", "Rooks", "Rush", "Russell", "Saline", "Scott", "Sedgwick", "Seward", "Shawnee", "Sheridan", "Sherman", "Smith", "Stafford", "Stanton", "Stevens", "Sumner", "Thomas", "Trego", "Wabaunsee", "Wallace", "Washington", "Wichita", "Wilson", "Woodson", "Wyandotte");
 
+	var formationArr = new Array("Admire Gp - Pennsylvanian Subsystem","Alluvium (early Pleistocene) - Quaternary System","Alluvium - Quaternary System","Carlile Shale - Cretaceous System","Chase Gp - Permian System","Cherokee Gp - Pennsylvanian Subsystem","Council Grove Gp - Pennsylvanian Subsystem","Council Grove Gp - Permian System","Dakota Fm  - Cretaceous System","Douglas Gp - Pennsylvanian Subsystem","Dune Sand - Quaternary System","Glacial Drift - Quaternary System","Greenhorn Ls, Graneros Sh - Cretaceous System","Guadalupian Sr - Permian System","Jurassic System","Kansas City Gp - Pennsylvanian Subsystem","Kiowa Sh, Cheyenne Ss  - Cretaceous System","Lansing Gp - Pennsylvanian Subsystem","Loess - Quaternary System","Marmaton Gp - Pennsylvanian Subsystem","Niobrara Chalk - Cretaceous System","Nippewalla Gp - Permian System","Ogallala Fm - Neogene System","Pierre Shale - Cretaceous System","Pleasanton Gp - Pennsylvanian Subsystem","Shawnee Gp - Pennsylvanian Subsystem","Sumner Gp - Permian System","Terrace Deposits - Neogene System","Wabaunsee Gp - Pennsylvanian Subsystem","Warsaw Ls, Keokuk Ls - Mississippian Subsystem");
+
 
     // Set up basic frame:
     window.document.title = "Kansas Geology Mapper";
@@ -166,7 +168,8 @@ function(
     view.then(function() {
 		createTOC();
 		// createDashboard();
-		popCountyDropdown();
+		// popCountyDropdown();
+		popFormationDropdown();
 
         on(view, "click", executeIdTask);
 
@@ -251,6 +254,14 @@ function(
         for(var i=0; i<cntyArr.length; i++) {
             theCnty = cntyArr[i];
             $('#lstCounty').append('<option value="' + theCnty + '">' + theCnty + '</option>');
+        }
+    }
+
+
+	function popFormationDropdown() {
+        for(var i=0; i<formationArr.length; i++) {
+            frm = formationArr[i];
+            $('#formation-name').append('<option value="' + frm + '">' + frm + '</option>');
         }
     }
 
@@ -733,7 +744,7 @@ function(
 
 
 	function zoomToState() {
-		view.center = [-98, 38];
+		view.center = [-98.4, 38.5];
 		view.zoom = 7;
 	}
 
@@ -1081,42 +1092,25 @@ function(
                 }
                 findParams.searchText = plssText;
                 break;
-            case "api":
-                var apiText = dom.byId('api_state').value + "-" + dom.byId('api_county').value + "-" + dom.byId('api_number').value;
-
-                if (dom.byId('api_extension').value != "") {
-                    apiText = apiText + "-" + dom.byId('api_extension').value;
-                }
-                findParams.layerIds = [19];
-                findParams.searchFields = ["api_number"];
-                findParams.searchText = apiText;
-				findParams.contains = false;
-				swdLayer.visible = true;
-                $("#Salt-Water-Disposal-Wells input").prop("checked", true);
-                break;
-            case "county":
-                findParams.layerIds = [2];
-                findParams.searchFields = ["county"];
-                findParams.searchText = dom.byId("lstCounty").value;
-                break;
-            case "field":
-                findParams.layerIds = [1];
-                findParams.searchFields = ["field_name"];
-                findParams.contains = false;
-                findParams.searchText = dom.byId("field-select").value;
-                fieldsLayer.visible = true;
-                $("#Oil-and-Gas-Fields input").prop("checked", true);
-				break;
-			case "event":
-				findParams.layerIds = [14, 15, 16, 17];
-				findParams.searchFields = ["event_id"];
-				findParams.contains = false;
+            // case "county":
+            //     findParams.layerIds = [2];
+            //     findParams.searchFields = ["county"];
+            //     findParams.searchText = dom.byId("lstCounty").value;
+            //     break;
+			case "geol":
+				findParams.layerIds = [7];
+				findParams.searchFields = ["fname"];
+				findParams.contains = true;
 				findParams.returnGeometry = true;
-				findParams.searchText = parseInt(dom.byId("eventid").value);
+				findParams.searchText = dom.byId("formation-name").value;
 				break;
         }
         findTask.execute(findParams).then(function(response) {
-            zoomToFeature(response.results[0].feature);
+			if (what === "geol") {
+				highLightMulti(response.results);
+			} else {
+				zoomToFeature(response.results[0].feature);
+			}
 
 			var query = new Query();
 			query.returnGeometry = true;
@@ -1169,6 +1163,27 @@ function(
 			}
 		} );
     }
+
+
+	function highLightMulti(results) {
+		zoomToState();
+
+		var sym = new SimpleFillSymbol( {
+			style: "none",
+			outline: new SimpleLineSymbol( {
+				color: "yellow",
+				width: 2
+			} )
+		} );
+
+		for (var i = 0; i < results.length; i++) {
+			hilite = new Graphic( {
+				geometry: results[i].feature.geometry,
+				symbol: sym
+			} );
+			graphicsLayer.add(hilite);
+		}
+	}
 
 
 	saveSettings = function() {
@@ -1774,7 +1789,7 @@ function(
 
 	resetFinds = function() {
 		searchWidget.clear();
-		$("#twn, #rng, #sec, #datum, #lstCounty").prop("selectedIndex", 0);
+		$("#twn, #rng, #sec, #datum, #lstCounty, #formation-name").prop("selectedIndex", 0);
 		$("#rngdir-w").prop("checked", "checked");
 		$("[name=welltype]").filter("[value='none']").prop("checked",true);
 		$("#api_state, #api_county, #api_number, #api_extension, #lat, #lon, #field-select, #eventid").val("");
@@ -1839,18 +1854,24 @@ function(
         content += '<tr><td class="find-label">Longitude:</td><td><input type="text" id="lon" placeholder="e.g. -98.12345"></td></tr>';
         content += '<tr><td class="find-label">Datum:</td><td><select id="datum"><option value="wgs84">WGS84</option><option value="nad83">NAD83</option><option value="nad27">NAD27</option><td></td></tr>';
         content += '<tr><td></td><td><button class="find-button" onclick="zoomToLatLong();">Find</button></td></tr>';
-        content += '</table><hr></div>';
+        content += '</table></div>';
+
+		// geologic unit:
+        content += '<div class="find-header esri-icon-right-triangle-arrow" id="formation"><span class="find-hdr-txt"> Formation<span></div>';
+        content += '<div class="find-body hide" id="find-formation">';
+        content += '<table id="formation-tbl"><tr><td><select id="formation-name"></select></td></tr>';
+		content += '<td><button class=find-button onclick=findIt("geol")>Find</button></td></tr></table>';
+        content += '</div>';
+		content += '</div>';
 
 		// buttons:
-		content += '<table><tr><td><button onclick="clearHighlights()">Clear Highlight</button></td><td><button onclick="resetFinds()">Reset</button></td></tr></table>';
+		content += '<hr><table><tr><td><button onclick="clearHighlights()">Clear Highlight</button></td><td><button onclick="resetFinds()">Reset</button></td></tr></table>';
 
 		// bookmarks
 		// content += '<div class="panel-sub-txt">Bookmarks <span class="esri-icon-plus-circled" id="add-bookmark" title="Add Bookmark" onclick="addBookmark()"></span></div>';
 		// content += '<div class="bookmark-link"><span onclick="originalLocation()">Original Location</div>';
         // content += '</div>';
         // content += '</div>';
-
-		// content += '<span id="remove-hilight"><button onclick="clearHighlights()">Clear Highlight</button></span> <span id="reset-finds"><button onclick="resetFinds()">Reset</button></span>';
 
         menuObj = {
             label: '<div class="icon-zoom-in"></div><div class="icon-text">Find</div>',

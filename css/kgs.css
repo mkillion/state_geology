@@ -18,6 +18,11 @@
 	color: #808080;
 }
 
+#formation-tbl {
+	left: -14px;
+	position: relative;
+}
+
 .note {
 	color: ##6E6E6E;
 	font: italic normal normal 12px arial;
