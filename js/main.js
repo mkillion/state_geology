@@ -188,6 +188,13 @@ function(
 		identifyParams.width = view.width;
 		identifyParams.height = view.height;
 
+		view.popup.on("trigger-action", function(evt) {
+            if(evt.action.id === "zoom-to") {
+                // Default zoom-to action wasn't working, so I highjacked it and rolled my own.
+				zoomToFeature(view.popup.selectedFeature);
+            }
+        } );
+
 		updateMap();
     } );
 
