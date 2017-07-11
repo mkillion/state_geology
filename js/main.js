@@ -250,6 +250,14 @@ function(
         $("#find-"+findBody).fadeIn("fast");
     } );
 
+	$(".esri-icon-erase").click(function() {
+		graphicsLayer.removeAll();
+    } );
+
+	$(".esri-icon-refresh").click(function() {
+		resetFinds();
+	} );
+
 	// data section:
 	$(".data-header").click(function() {
 		var section = $(this).attr("id");
@@ -1833,7 +1841,7 @@ function(
         content = '';
         content += '<div class="panel-container">';
         // content += '<div class="panel-header">Display <span id="clear-filters"><span class="esri-icon-erase" title="Clear Filter & Graphics"></span><span class="esri-icon-filter" title="Filter Features"></span></div>';
-		content += '<div class="panel-header">Display</div>';
+		content += '<div class="panel-header">Display <span class="esri-icon-erase" title="Clear Highlighting"></span></div>';
         content += '<div id="lyrs-toc"></div>';
         content += '</div>';
 
@@ -1846,7 +1854,7 @@ function(
         // Find panel:
         content = '';
         content += '<div class="panel-container">';
-        content += '<div class="panel-header">Find</div>';
+        content += '<div class="panel-header">Find <span class="esri-icon-erase" title="Clear Highlighting"></span><span class="esri-icon-refresh" title="Reset defaults"></span></div>';
         content += '<div class="panel-padding">';
 
 		// plss:
@@ -1893,9 +1901,6 @@ function(
         content += '</div>';
 		content += '</div>';
 
-		// buttons:
-		content += '<hr><table><tr><td><button onclick="clearHighlights()">Clear Highlight</button></td><td><button onclick="resetFinds()">Reset</button></td></tr></table>';
-
 		// bookmarks
 		// content += '<div class="panel-sub-txt">Bookmarks <span class="esri-icon-plus-circled" id="add-bookmark" title="Add Bookmark" onclick="addBookmark()"></span></div>';
 		// content += '<div class="bookmark-link"><span onclick="originalLocation()">Original Location</div>';
@@ -1911,9 +1916,9 @@ function(
 		// Legend panel:
         content = '';
         content += '<div class="panel-container">';
-        content += '<div class="panel-header">Legend</div>';
+        content += '<div class="panel-header">Legend <span class="esri-icon-erase" title="Clear Highlighting"></span></div>';
         content += '<div class="panel-padding">';
-        content += '<div id="legend-content"></div>';
+        content += '<hr><div id="legend-content"></div>';
 		// content += '<div class="panel-header">Links</div>';
         content += '</div>';
         content += '</div>';

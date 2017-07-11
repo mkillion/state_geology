@@ -110,7 +110,7 @@ th {
 	cursor: pointer;
 	font-size: 14px;
 	font-weight: bold;
-	padding: 8px;
+	padding-left: 15px;
 }
 
 .esri-icon-checkbox-checked,
@@ -119,8 +119,9 @@ th {
 	padding: 11px 14px;
 }
 
+
 .esri-icon-erase {
-	padding-left: 8px;
+	padding-left: 140px;
 }
 
 #reset-finds {
