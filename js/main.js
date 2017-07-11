@@ -202,13 +202,23 @@ function(
      } );
 	 homeBtn.viewpoint = stateVp;
 
-	//  var scaleBar = new ScaleBar( {
-    //     view: view,
-    //     unit: "dual"
-    //   } );
-    //   view.ui.add(scaleBar, {
-    //     position: "bottom-left"
-    //   } );
+	 var scaleBar = new ScaleBar( {
+        view: view,
+        unit: "dual"
+      } );
+      view.ui.add(scaleBar, {
+        position: "bottom-left"
+      } );
+
+	  var legend = new Legend( {
+  	 	view: view,
+  	  	layerInfos: [
+  		{
+  			layer: geologyLayer,
+  			title: " "
+  		}
+  		]
+  	}, "legend-content" );
     // End map and map widgets.
 
     // Miscellaneous click handlers:
@@ -2180,10 +2190,9 @@ function(
 				} );
 				feature.popupTemplate = earthquakeTemplate;
 			}
-			else if (layerName === "StateWide500g") {
-				// geology
+			else if (layerName === "Geology") {
 				var geologyTemplate = new PopupTemplate( {
-					title: "Geologic Formation:",
+					title: "Geologic Formation",
 					content: geologyContent(feature)
 				} );
 				feature.popupTemplate = geologyTemplate;

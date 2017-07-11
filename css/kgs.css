@@ -421,7 +421,9 @@ input[type=checkbox] {
 	}
 
 	#dashboard-btn {
-		display: block;
+		/* commented out because dash is not used in state geol mapper */
+		/*display: block;*/
+		display: none;
 	}
 
 	.db-sub-div {
