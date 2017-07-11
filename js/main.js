@@ -146,11 +146,23 @@ function(
     var adminBndsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_admin_bnds/MapServer", id:"Administrative Boundaries", visible:true} );
 	var roadsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_roads/MapServer", id:"Roads", visible:true} );
 	var hillshadeLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hillshade/MapServer", id:"Hillshade", visible:true} );
-	var geologyLayer = new MapImageLayer( {url:geologyServiceURL, id:"Geology", visible:true} );
+	var geologyLayer = new MapImageLayer( {
+		url:geologyServiceURL,
+		sublayers:[
+			{id:0, opacity:1},
+			{id:1},
+			{id:6, legendEnabled:false},
+			{id:7},
+			{id:8, visible:false}
+		],
+		id:"Geology",
+		visible:true
+	} );
+	var labelsLayer = new MapImageLayer( {url:geologyServiceURL, sublayers:[{id:3}], id:"Geology Labels", visible:true} );
 	var hydroLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hydro/MapServer", id:"Hydro", visible:true} );
 
     var map = new Map( {
-		layers: [basemapLayer, hillshadeLayer, geologyLayer, hydroLayer, adminBndsLayer, roadsLayer]
+		layers: [basemapLayer, hillshadeLayer, geologyLayer, labelsLayer, hydroLayer, adminBndsLayer, roadsLayer]
     } );
 
     var graphicsLayer = new GraphicsLayer();
