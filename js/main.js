@@ -182,6 +182,7 @@ function(
 		// createDashboard();
 		// popCountyDropdown();
 		popFormationDropdown();
+		popGlossary();
 
         on(view, "click", executeIdTask);
 
@@ -286,6 +287,8 @@ function(
 		$("#dashboard-btn").hide();
 	} );
 
+	$("#glossary-container").dialog( {title:"Glossary", autoOpen:false, height:300, width:600} );
+
 
     function popCountyDropdown() {
         for(var i=0; i<cntyArr.length; i++) {
@@ -308,6 +311,13 @@ function(
 			alert("Oil wells cannot be selected statewide. Please select a smaller area.");
 			$("[name=area-type]").filter("[value='state']").prop("checked", false);
 		}
+	}
+
+
+	function popGlossary() {
+		$.get("glossaryContent2.htm", function(response) {
+			$("#glossary").html(response);
+		} );
 	}
 
 
@@ -2303,7 +2313,7 @@ function(
 		var content = "<table id='popup-tbl'>";
 		content += "<tr><td>Description:</td><td></td></tr>";
 		content += "<tr><td colspan='2'>{DESCRIPTION}</td></tr>";
-		content += "<tr><td><span id='gloss' onclick='alert(&quot;hey&quot;)'>Glossary</span></td><td></td>";
+		content += "<tr><td><span id='gloss' onclick='openGlossary()'>Glossary</span></td><td></td>";
 		content += "</table>";
 
 		return content;
@@ -2373,6 +2383,11 @@ function(
 
         return content;
     }
+
+
+	openGlossary = function() {
+		$("#glossary-container").dialog("open");
+	}
 
 
     toggleLayer = function(j) {
