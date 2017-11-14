@@ -102,7 +102,7 @@ function(
 	var hilite;
 	var cntyArr = new Array("Allen", "Anderson", "Atchison", "Barber", "Barton", "Bourbon", "Brown", "Butler", "Chase", "Chautauqua", "Cherokee", "Cheyenne", "Clark", "Clay", "Cloud", "Coffey", "Comanche", "Cowley", "Crawford", "Decatur", "Dickinson", "Doniphan", "Douglas", "Edwards", "Elk", "Ellis", "Ellsworth", "Finney", "Ford", "Franklin", "Geary", "Gove", "Graham", "Grant", "Gray", "Greeley", "Greenwood", "Hamilton", "Harper", "Harvey", "Haskell", "Hodgeman", "Jackson", "Jefferson", "Jewell", "Johnson", "Kearny", "Kingman", "Kiowa", "Labette", "Lane", "Leavenworth", "Lincoln", "Linn", "Logan", "Lyon", "McPherson", "Marion", "Marshall", "Meade", "Miami", "Mitchell", "Montgomery", "Morris", "Morton", "Nemaha", "Neosho", "Ness", "Norton", "Osage", "Osborne", "Ottawa", "Pawnee", "Phillips", "Pottawatomie", "Pratt", "Rawlins", "Reno", "Republic", "Rice", "Riley", "Rooks", "Rush", "Russell", "Saline", "Scott", "Sedgwick", "Seward", "Shawnee", "Sheridan", "Sherman", "Smith", "Stafford", "Stanton", "Stevens", "Sumner", "Thomas", "Trego", "Wabaunsee", "Wallace", "Washington", "Wichita", "Wilson", "Woodson", "Wyandotte");
 
-	var formationArr = new Array("Admire Gp - Pennsylvanian Subsystem","Alluvium (early Pleistocene) - Quaternary System","Alluvium - Quaternary System","Carlile Shale - Cretaceous System","Chase Gp - Permian System","Cherokee Gp - Pennsylvanian Subsystem","Council Grove Gp - Pennsylvanian Subsystem","Council Grove Gp - Permian System","Dakota Fm  - Cretaceous System","Douglas Gp - Pennsylvanian Subsystem","Dune Sand - Quaternary System","Glacial Drift - Quaternary System","Greenhorn Ls, Graneros Sh - Cretaceous System","Guadalupian Sr - Permian System","Jurassic System","Kansas City Gp - Pennsylvanian Subsystem","Kiowa Sh, Cheyenne Ss  - Cretaceous System","Lansing Gp - Pennsylvanian Subsystem","Loess - Quaternary System","Marmaton Gp - Pennsylvanian Subsystem","Niobrara Chalk - Cretaceous System","Nippewalla Gp - Permian System","Ogallala Fm - Neogene System","Pierre Shale - Cretaceous System","Pleasanton Gp - Pennsylvanian Subsystem","Shawnee Gp - Pennsylvanian Subsystem","Sumner Gp - Permian System","Terrace Deposits - Neogene System","Wabaunsee Gp - Pennsylvanian Subsystem","Warsaw Ls, Keokuk Ls - Mississippian Subsystem");
+	var formationArr = new Array("Admire Group","Alluvium (early Pleistocene)","Alluvium (late Pleistocene and Holocene)","Burlington-Keokuk Limestone, Warsaw Limestone","Carlile Shale","Chase Group","Cherokee Group","Cheyenne Sandstone, Kiowa Formation","Council Grove Group","Dakota Formation","Day Creek Dolomite, Big Basin Formation","Douglas Group","Dune sand","Glacial drift","Graneros Shale, Greenhorn Limestone","Jurassic System","Kansas City Group","Lansing Group","Loess","Marmaton Group","Niobrara Chalk","Nippewalla Group, Whitehorse Formation","Ogallala Formation","Pierre Shale","Pleasanton Group","Shawnee Group","Sumner Group","Terrace deposits","Wabaunsee Group");
 
 
     // Set up basic frame:
@@ -1136,7 +1136,7 @@ function(
             //     break;
 			case "geol":
 				findParams.layerIds = [7];
-				findParams.searchFields = ["fname"];
+				findParams.searchFields = ["name"];
 				findParams.contains = true;
 				findParams.returnGeometry = true;
 				findParams.searchText = dom.byId("formation-name").value;
@@ -2216,7 +2216,7 @@ function(
 			}
 			else if (layerName === "Geology") {
 				var geologyTemplate = new PopupTemplate( {
-					title: "Geologic Formation",
+					title: "{Name}",
 					content: geologyContent(feature)
 				} );
 				feature.popupTemplate = geologyTemplate;
@@ -2300,7 +2300,11 @@ function(
 
 
 	function geologyContent(feature) {
-		var content = "<table id='popup-tbl'><tr><td>Name:</td><td>{Fname}</td></tr></table>";
+		var content = "<table id='popup-tbl'>";
+		content += "<tr><td>Description:</td><td></td></tr>";
+		content += "<tr><td colspan='2'>{DESCRIPTION}</td></tr>";
+		content += "<tr><td><span id='gloss' onclick='alert(&quot;hey&quot;)'>Glossary</span></td><td></td>";
+		content += "</table>";
 
 		return content;
 	}
