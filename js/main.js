@@ -2226,7 +2226,7 @@ function(
 			}
 			else if (layerName === "Geology") {
 				var geologyTemplate = new PopupTemplate( {
-					title: "{Name}",
+					title: "{NAME}",
 					content: geologyContent(feature)
 				} );
 				feature.popupTemplate = geologyTemplate;
@@ -2310,9 +2310,12 @@ function(
 
 
 	function geologyContent(feature) {
+		var src = feature.attributes.SOURCE.replace(/;/g, "<p>");
 		var content = "<table id='popup-tbl'>";
 		content += "<tr><td>Description:</td><td></td></tr>";
-		content += "<tr><td colspan='2'>{DESCRIPTION}</td></tr>";
+		content += "<tr><td colspan='2'>{DESCRIPT_1}</td></tr>";
+		content += "<tr><td>Source(s):</td><td></td></tr>";
+		content += "<tr><td colspan='2'>" + src + "</td></tr>";
 		content += "<tr><td><span id='gloss' onclick='openGlossary()'>Glossary</span></td><td></td>";
 		content += "</table>";
 
