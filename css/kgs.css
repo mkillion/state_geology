@@ -28,6 +28,14 @@
 	text-decoration: underline;
 }
 
+.geol-source {
+	background-color: #FFFF !important;
+	border-bottom-color: #CCC;
+	border-bottom-style: dotted;
+	border-bottom-width: thin;
+	margin-bottom: 3px;
+}
+
 .note {
 	color: ##6E6E6E;
 	font: italic normal normal 12px arial;

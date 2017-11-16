@@ -2310,12 +2310,19 @@ function(
 
 
 	function geologyContent(feature) {
-		var src = feature.attributes.SOURCE.replace(/;/g, "<p>");
+		// var src = feature.attributes.SOURCE.replace(/;/g, "&nbsp;&nbsp;&nbsp;<p>");
+		var arrSrc = feature.attributes.SOURCE.split(";");
+		var srcTbl = "<table>";
+		for (var i = 0; i < arrSrc.length; i++) {
+			srcTbl += "<tr class='geol-source'><td>" + arrSrc[i] + "</td></tr>";
+		}
+		srcTbl += "</table>";
+
 		var content = "<table id='popup-tbl'>";
 		content += "<tr><td>Description:</td><td></td></tr>";
 		content += "<tr><td colspan='2'>{DESCRIPT_1}</td></tr>";
 		content += "<tr><td>Source(s):</td><td></td></tr>";
-		content += "<tr><td colspan='2'>" + src + "</td></tr>";
+		content += "<tr><td colspan='2'>" + srcTbl + "</td></tr>";
 		content += "<tr><td><span id='gloss' onclick='openGlossary()'>Glossary</span></td><td></td>";
 		content += "</table>";
 
