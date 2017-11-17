@@ -159,11 +159,11 @@ function(
 	// 	visible:true
 	// } );
 	var geologyLayer = new TileLayer( {url:geologyServiceURL, id:"Geology", visible:true, opacity:0.8} );
-	var labelsLayer = new MapImageLayer( {url:geologyServiceURL, sublayers:[{id:3}], id:"Geology Labels", visible:true} );
+	// var labelsLayer = new MapImageLayer( {url:geologyServiceURL, sublayers:[{id:3}], id:"Geology Labels", visible:true} );
 	var hydroLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hydro/MapServer", id:"Hydro", visible:true} );
 
     var map = new Map( {
-		layers: [basemapLayer, hillshadeLayer, geologyLayer, labelsLayer, hydroLayer, adminBndsLayer, roadsLayer]
+		layers: [basemapLayer, hillshadeLayer, geologyLayer, hydroLayer, adminBndsLayer, roadsLayer]
     } );
 
     var graphicsLayer = new GraphicsLayer();
