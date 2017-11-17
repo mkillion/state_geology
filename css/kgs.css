@@ -28,6 +28,11 @@
 	text-decoration: underline;
 }
 
+input,
+select {
+	font-size: 16px;
+}
+
 .geol-source {
 	background-color: #FFFF !important;
 	border-bottom-color: #CCC;
