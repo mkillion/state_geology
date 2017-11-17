@@ -133,7 +133,7 @@ function(
     createMenus();
 
     // Create map, layers, and widgets:
-	var geologyServiceURL = "http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_geol/MapServer";
+	var geologyServiceURL = "http://services.kgs.ku.edu/arcgis2/rest/services/geology/map118_geol/MapServer";
 	identifyTask = new IdentifyTask(geologyServiceURL);
 	identifyParams = new IdentifyParameters();
 	identifyParams.returnGeometry = true;
@@ -145,19 +145,20 @@ function(
     var basemapLayer = new TileLayer( {url:"http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", id:"Basemap", visible:true} );
     var adminBndsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_admin_bnds/MapServer", id:"Administrative Boundaries", visible:true} );
 	var roadsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_roads/MapServer", id:"Roads", visible:true} );
-	var hillshadeLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hillshade/MapServer", id:"Hillshade", visible:true} );
-	var geologyLayer = new MapImageLayer( {
-		url:geologyServiceURL,
-		sublayers:[
-			{id:0, opacity:1},
-			{id:1},
-			{id:6, legendEnabled:false},
-			{id:7},
-			{id:8, visible:false}
-		],
-		id:"Geology",
-		visible:true
-	} );
+	var hillshadeLayer = new TileLayer( {url:"http://services.kgs.ku.edu/arcgis2/rest/services/geology/map118_hillshade/MapServer", id:"Hillshade", visible:true} );
+	// var geologyLayer = new MapImageLayer( {
+	// 	url:geologyServiceURL,
+	// 	sublayers:[
+	// 		{id:0, opacity:1},
+	// 		{id:1},
+	// 		{id:6, legendEnabled:false},
+	// 		{id:7},
+	// 		{id:8, visible:false}
+	// 	],
+	// 	id:"Geology",
+	// 	visible:true
+	// } );
+	var geologyLayer = new TileLayer( {url:geologyServiceURL, id:"Geology", visible:true, opacity:0.8} );
 	var labelsLayer = new MapImageLayer( {url:geologyServiceURL, sublayers:[{id:3}], id:"Geology Labels", visible:true} );
 	var hydroLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_hydro/MapServer", id:"Hydro", visible:true} );
 
@@ -2310,7 +2311,6 @@ function(
 
 
 	function geologyContent(feature) {
-		// var src = feature.attributes.SOURCE.replace(/;/g, "&nbsp;&nbsp;&nbsp;<p>");
 		var arrSrc = feature.attributes.SOURCE.split(";");
 		var srcTbl = "<table>";
 		for (var i = 0; i < arrSrc.length; i++) {
