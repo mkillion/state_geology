@@ -141,9 +141,19 @@ function(
     var findTask = new FindTask(geologyServiceURL);
     var findParams = new FindParameters();
 	findParams.returnGeometry = true;
+	var adminFindTask = new FindTask("http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_admin_bnds/MapServer");
+	var adminFindParams = new FindParameters();
+	adminFindParams.returnGeometry = true;
 
     var basemapLayer = new TileLayer( {url:"http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", id:"Basemap", visible:true} );
-    var adminBndsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_admin_bnds/MapServer", id:"Administrative Boundaries", visible:true} );
+    var adminBndsLayer = new MapImageLayer( {
+		url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_admin_bnds/MapServer",
+		id:"Administrative Boundaries",
+		visible:true,
+		sublayers: [
+			{id:0}, {id:1}, {id:2},{id:3}, {id:4}, {id:5}, {id:6}, {id:7}, {id:8}, {id:9}, {id:10}, {id:11}, {id:12}, {id:13}, {id:14}, {id:15}, {id:16}, {id:17}, {id:18}, {id:19}, {id:20}
+		]
+	} );
 	var roadsLayer = new MapImageLayer( {url:"http://services.kgs.ku.edu/arcgis1/rest/services/geology/map118_roads/MapServer", id:"Roads", visible:true} );
 	var hillshadeLayer = new TileLayer( {url:"http://services.kgs.ku.edu/arcgis2/rest/services/geology/map118_hillshade/MapServer", id:"Hillshade", visible:true} );
 	// var geologyLayer = new MapImageLayer( {
@@ -1054,6 +1064,7 @@ function(
 
     function zoomToFeature(features) {
         var f = features[0] ? features[0] : features;
+
 		if (f.geometry.type === "point") {
 			var p = new Point(f.geometry.x, f.geometry.y, wmSR);
 			view.goTo( {
@@ -1130,18 +1141,23 @@ function(
 
                 if (dom.byId('sec').value !== "") {
                     plssText = 'S' + dom.byId('sec').value + '-T' + dom.byId('twn').value + 'S-R' + dom.byId('rng').value + dir;
-                    findParams.layerIds = [8];
-                    findParams.searchFields = ["s_r_t"];
+                    adminFindParams.layerIds = [21];
+                    adminFindParams.searchFields = ["s_r_t"];
                 }
                 else {
                     plssText = 'T' + dom.byId('twn').value + 'S-R' + dom.byId('rng').value + dir;
-                    findParams.layerIds = [10];
-                    findParams.searchFields = ["t_r"];
+                    adminFindParams.layerIds = [23];
+                    adminFindParams.searchFields = ["t_r"];
                 }
-                findParams.searchText = plssText;
+                adminFindParams.searchText = plssText;
+
+				adminFindTask.execute(adminFindParams).then(function(response) {
+					zoomToFeature(response.results[0].feature);
+				} );
+				return;
                 break;
             // case "county":
-            //     findParams.layerIds = [2];
+            //     findParams.layerIds = [22];
             //     findParams.searchFields = ["county"];
             //     findParams.searchText = dom.byId("lstCounty").value;
             //     break;
