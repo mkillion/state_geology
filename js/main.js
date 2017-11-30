@@ -106,8 +106,8 @@ function(
 
 
     // Set up basic frame:
-    window.document.title = "Kansas Geology Mapper";
-    $("#title").html("Kansas Geology<a id='kgs-brand' href='http://www.kgs.ku.edu'>Kansas Geological Survey</a>");
+    window.document.title = "Surficial Geology of Kansas";
+    $("#title").html("Surficial Geology of Kansas<a id='kgs-brand' href='http://www.kgs.ku.edu'>Kansas Geological Survey</a>");
 
     var showDrawerSize = 850;
 
@@ -2243,7 +2243,7 @@ function(
 			}
 			else if (layerName === "Geology") {
 				var geologyTemplate = new PopupTemplate( {
-					title: "{NAME}",
+					title: "{SYMB_NAME}",
 					content: geologyContent(feature)
 				} );
 				feature.popupTemplate = geologyTemplate;
