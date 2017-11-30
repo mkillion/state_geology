@@ -212,7 +212,8 @@ function(
 
 	var searchWidget = new Search( {
 		view: view,
-		popupEnabled: false
+		popupEnabled: false,
+		popupOpenOnSelect: false
 	}, "srch" );
 
 	var stateVp = new Viewpoint( {
