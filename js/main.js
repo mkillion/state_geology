@@ -2340,7 +2340,7 @@ function(
 		content += "<tr><td colspan='2'>{DESCRIPT_1}</td></tr>";
 		content += "<tr><td>Source(s):</td><td></td></tr>";
 		content += "<tr><td colspan='2'>" + srcTbl + "</td></tr>";
-		content += "<tr><td><span id='gloss' onclick='openGlossary()'>Glossary</span></td><td></td>";
+		content += "<tr><td><span id='gloss' onclick='openGlossary()'>Click for Glossary</span></td><td></td>";
 		content += "</table>";
 
 		return content;
